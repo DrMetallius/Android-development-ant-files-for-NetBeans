@@ -1,0 +1,45 @@
+<project name="CustomRules">
+	<target name="release-and-save" depends="release">
+		<xpath
+			input="AndroidManifest.xml"
+			expression="/manifest/@android:versionName"
+			output="manifest.versionName"
+			default="test"/>
+		<xpath
+			input="AndroidManifest.xml"
+			expression="/manifest/@android:versionCode"
+			output="manifest.versionCode"
+			default="test"/>
+		<copy
+			file="${out.final.file}"
+			tofile="releases/${ant.project.name}-release${manifest.versionCode}-${manifest.versionName}.apk"
+			overwrite="true"/>
+		<copy
+			file="${obfuscate.absolute.dir}/mapping.txt"
+			tofile="releases/mapping-release${manifest.versionCode}.txt"
+			overwrite="true"/>
+	</target>
+
+	<target name="rebuild-resources" depends="-set-debug-mode, -build-setup, -code-gen" />
+
+	<target name="-find-main-activity">
+		<xpath
+			input="AndroidManifest.xml"
+			expression="/manifest/@package"
+			output="project.app.package"
+			default="test"/>
+		<xpath
+			input="AndroidManifest.xml"
+			expression="/manifest/application/activity[intent-filter/category/@android:name = 'android.intent.category.LAUNCHER'][1]/@android:name"
+			output="project.app.mainactivity"
+			default="test"/>
+		<property name="project.app.launcharg" value="-a android.intent.action.MAIN -n ${project.app.package}/${project.app.mainactivity}"/>
+	</target>
+
+	<target name="launch" depends="-find-main-activity">
+		<exec executable="adb">
+			<arg line="shell am start"/>
+			<arg line="${project.app.launcharg}"/>
+		</exec>
+	</target>
+</project>
