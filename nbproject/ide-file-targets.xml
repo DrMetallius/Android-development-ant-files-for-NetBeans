@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".." name="Project-IDE">
+	<import file="../build.xml"/>
+
+	<target name="-load-props">
+       <property file="nbproject/debug.properties"/>
+    </target>
+
+    <target name="-check-props">
+       <fail unless="jpda.host"/>
+       <fail unless="jpda.address"/>
+       <fail unless="jpda.transport"/>
+    </target>
+
+    <target name="-init" depends="-load-props, -check-props"/>
+
+	<target name="-launch-monitor">
+		<if>
+			<condition>
+				<not>
+					<socket server="localhost" port="8700"/>
+				</not>
+			</condition>
+			<then>
+				<exec executable="${android.tools.dir}/monitor${bat}"/>
+				<waitfor maxwait="20" maxwaitunit="second">
+					<socket server="localhost" port="8700"/>
+				</waitfor>
+				<sleep seconds="2"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="-launch-debug" depends="-find-main-activity">
+		<exec executable="adb">
+			<arg line="shell am start -D"/>
+			<arg line="${project.app.launcharg}"/>
+		</exec>
+	</target>
+
+    <target name="debug-nb" depends="-init, -launch-monitor, -launch-debug">
+		<nbjpdaconnect
+			address="${jpda.address}"
+			host="${jpda.host}"
+			name="${ant.project.name}"
+			transport="${jpda.transport}"
+		/>
+    </target>
+</project>
