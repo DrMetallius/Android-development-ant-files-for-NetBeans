@@ -28,6 +28,6 @@ Some weird guys (like me) develop for Android, but are not too fond of coding in
 
 Copyright 2014 Alexander Gazarov. Contact at malcolm [dot] soft [at] gmail [dot] com.
 
-This work is free. You can redistribute it and/or modify it under the
-terms of the Do What The Fuck You Want To Public License, Version 2,
+This work is free. It comes without any warranty, to the extent permitted by applicable law.
+You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2,
 as published by Sam Hocevar. See [http://www.wtfpl.net/](http://www.wtfpl.net/) for more details.
