@@ -3,16 +3,16 @@
 	<import file="../build.xml"/>
 
 	<target name="-load-props">
-       <property file="nbproject/debug.properties"/>
-    </target>
+		<property file="nbproject/debug.properties"/>
+	</target>
 
-    <target name="-check-props">
-       <fail unless="jpda.host"/>
-       <fail unless="jpda.address"/>
-       <fail unless="jpda.transport"/>
-    </target>
+	<target name="-check-props">
+		<fail unless="jpda.host"/>
+		<fail unless="jpda.address"/>
+		<fail unless="jpda.transport"/>
+	</target>
 
-    <target name="-init" depends="-load-props, -check-props"/>
+	<target name="-init" depends="-load-props, -check-props"/>
 
 	<target name="-launch-monitor">
 		<if>
@@ -38,12 +38,12 @@
 		</exec>
 	</target>
 
-    <target name="debug-nb" depends="-init, -launch-monitor, -launch-debug">
+	<target name="debug-nb" depends="-init, -launch-monitor, -launch-debug">
 		<nbjpdaconnect
 			address="${jpda.address}"
 			host="${jpda.host}"
 			name="${ant.project.name}"
 			transport="${jpda.transport}"
 		/>
-    </target>
+	</target>
 </project>
