@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir=".." name="ProjectTest-IDE">
-    <import file="../build.xml"/>
+	<import file="../build.xml"/>
 
 	<property name="test.runner" value="android.test.InstrumentationTestRunner" />
 
 	<target name="-load-props">
-        <property file="nbproject/debug.properties"/>
-    </target>
+		<property file="nbproject/debug.properties"/>
+	</target>
 
-    <target name="-check-props">
-        <fail unless="jpda.host"/>
-        <fail unless="jpda.address"/>
-        <fail unless="jpda.transport"/>
-    </target>
+	<target name="-check-props">
+		<fail unless="jpda.host"/>
+		<fail unless="jpda.address"/>
+		<fail unless="jpda.transport"/>
+	</target>
 
 	<target name="-init" depends="-load-props, -check-props"/>
 
 	<target name="-launch-monitor">
-        <if>
-            <condition>
-                <not>
+		<if>
+			<condition>
+				<not>
 					<socket server="localhost" port="8700"/>
-                </not>
-            </condition>
-            <then>
-                <exec executable="${android.tools.dir}/monitor${bat}"/>
-                <waitfor maxwait="20" maxwaitunit="second">
+				</not>
+			</condition>
+			<then>
+				<exec executable="${android.tools.dir}/monitor${bat}"/>
+				<waitfor maxwait="20" maxwaitunit="second">
 					<socket server="localhost" port="8700"/>
 				</waitfor>
 				<sleep seconds="2"/>
-            </then>
-        </if>
-    </target>
+			</then>
+		</if>
+	</target>
 
-    <target depends="-setup" name="run-selected-file-in-src">
-        <fail unless="run.class">Must set property 'run.class'</fail>
+	<target depends="-setup" name="run-selected-file-in-src">
+		<fail unless="run.class">Must set property 'run.class'</fail>
 		<echo level="info">Running tests in ${run.class}...</echo>
 		<run-tests-helper>
 			<extra-instrument-args>
@@ -84,5 +84,5 @@
 
 	<target depends="-setup, -init, -launch-monitor" name="debug-nb">
 		<launch-debug-and-connect/>
-    </target>
+	</target>
 </project>
