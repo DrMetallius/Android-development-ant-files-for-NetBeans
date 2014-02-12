@@ -33,7 +33,18 @@
 			expression="/manifest/application/activity[intent-filter/category/@android:name = 'android.intent.category.LAUNCHER'][1]/@android:name"
 			output="project.app.mainactivity"
 			default="test"/>
-		<property name="project.app.launcharg" value="-a android.intent.action.MAIN -n ${project.app.package}/${project.app.mainactivity}"/>
+		<if>
+			<condition>
+				<matches pattern="\..+|[^\.].*\..*[^\.]" string="${project.app.mainactivity}"/>
+			</condition>
+			<then>
+				<property name="project.app.mainactivity.qualified" value="${project.app.mainactivity}"/>
+			</then>
+			<else>
+				<property name="project.app.mainactivity.qualified" value=".${project.app.mainactivity}"/>
+			</else>
+		</if>
+		<property name="project.app.launcharg" value="-a android.intent.action.MAIN -n ${project.app.package}/${project.app.mainactivity.qualified}"/>
 	</target>
 
 	<target name="launch" depends="-find-main-activity">
